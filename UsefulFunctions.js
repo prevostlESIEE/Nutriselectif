@@ -1,7 +1,15 @@
 import { Keyboard } from 'react-native';
 
-export default function ignorePress() {
-  Keyboard.dismiss();
+export function ignorePress() {
+  Keyboard.dismiss(); //For some reason, this does not work and thus require the following function to be used
+}
+export function XXignorePress() {
+  return new Promise((resolve, reject) => {
+    Keyboard.dismiss();
+    setTimeout(() => {
+      resolve();
+    }, 5);
+  });
 }
 
 export const BMR = (gender, weight, height, age, activityLevel, healthGoal) => {

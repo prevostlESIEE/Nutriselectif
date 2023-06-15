@@ -1,31 +1,40 @@
 import { Picker } from '@react-native-picker/picker';
-import { Text, View, TextInput, Platform } from 'react-native';
+import { Text, View, TextInput, Platform, TouchableOpacity } from 'react-native';
 
 import styles from './StyleSheet.js';
+import { ignorePress } from './UsefulFunctions.js';
 
 export const TextField = (props) => {
-  let textValue;
   return (
     <>
+      {props.label !== undefined ? (
+        <View style={styles.row}>
+          <Text style={[styles.fieldLabel]}>{props.label}</Text>
+        </View>
+      ) : (
+        <View style={{ marginTop: 15 }} />
+      )}
+
       <View style={styles.row}>
-        <Text style={[styles.fieldLabel]}>{props.label}</Text>
-      </View>
-      <View style={styles.row}>
-        <View style={(styles.col, { flex: 1 })} />
-        <View style={(styles.col, { flex: 4 })}>
+        <View style={[styles.col, { flex: 1 }]} />
+        <View style={[styles.col, { flex: 4 }]}>
           <TextInput
-            style={styles.input}
+            id={props.id}
+            style={[styles.input, props.additionnalStyle]}
             keyboardType={props.keyboardType}
-            defaultValue={props.state}
-            onChangeText={(text) => {
-              textValue = text;
+            value={props.state}
+            placeholder={props.placeholder}
+            onChangeText={function (newValue) {
+              props.changeFunction(newValue);
+              if (props.autoCompleteChange) props.autoCompleteChange(newValue);
             }}
-            onEndEditing={() => {
-              props.changeFunction(textValue);
+            onFocus={function () {
+              if (props.focusFunction) props.focusFunction(this.value);
             }}
+            onBlur={props.blurFunction}
           />
         </View>
-        <View style={(styles.col, { flex: 1 })} />
+        <View style={[styles.col, { flex: 1 }]} />
       </View>
     </>
   );
@@ -39,8 +48,8 @@ export const PickerField = (props) => {
           <Text style={[styles.fieldLabel]}>{props.label}</Text>
         </View>
         <View style={styles.row}>
-          <View style={(styles.col, { flex: 1 })} />
-          <View style={(styles.col, { flex: 4 })}>
+          <View style={[styles.col, { flex: 1 }]} />
+          <View style={[styles.col, { flex: 4 }]}>
             <View style={styles.pickerView}>
               <Picker
                 style={styles.picker}
@@ -54,7 +63,7 @@ export const PickerField = (props) => {
               </Picker>
             </View>
           </View>
-          <View style={(styles.col, { flex: 1 })} />
+          <View style={[styles.col, { flex: 1 }]} />
         </View>
       </>
     );
@@ -65,8 +74,8 @@ export const PickerField = (props) => {
           <Text style={[styles.fieldLabel]}>{props.label}</Text>
         </View>
         <View style={styles.row}>
-          <View style={(styles.col, { flex: 1 })} />
-          <View style={(styles.col, { flex: 4 })}>
+          <View style={[styles.col, { flex: 1 }]} />
+          <View style={[styles.col, { flex: 4 }]}>
             <Picker
               style={styles.pickerIos}
               itemStyle={styles.pickerItemIos}
@@ -77,7 +86,7 @@ export const PickerField = (props) => {
               })}
             </Picker>
           </View>
-          <View style={(styles.col, { flex: 1 })} />
+          <View style={[styles.col, { flex: 1 }]} />
         </View>
       </>
     );
@@ -88,12 +97,31 @@ export const DisplayField = (props) => {
   return (
     <>
       <View style={styles.row}>
-        <View style={(styles.col, { flex: 1 })} />
-        <View style={(styles.col, { flex: 8 })}>
+        <View style={[styles.col, { flex: 1 }]} />
+        <View style={[styles.col, { flex: 8 }]}>
           <Text style={styles.displayField}>{props.displayedText}</Text>
         </View>
-        <View style={(styles.col, { flex: 1 })} />
+        <View style={[styles.col, { flex: 1 }]} />
       </View>
     </>
+  );
+};
+
+export const AutoCompleteRow = (props) => {
+  return (
+    <TouchableOpacity
+      onPress={function () {
+        props.onPressFunction(props.text);
+        ignorePress();
+      }}>
+      <View
+        style={[styles.row, { position: 'absolute', left: 0, bottom: (props.index + 1) * -40 }]}>
+        <View style={[styles.col, { flex: 1 }]} />
+        <View style={[styles.col, { flex: 4 }]}>
+          <Text style={styles.autocomplete}>{props.text}</Text>
+        </View>
+        <View style={[styles.col, { flex: 1 }]} />
+      </View>
+    </TouchableOpacity>
   );
 };

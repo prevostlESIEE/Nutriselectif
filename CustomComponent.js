@@ -1,6 +1,6 @@
-import { useState } from 'react';
-
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
+import { useState } from 'react';
 import {
   Text,
   View,
@@ -14,7 +14,6 @@ import {
 
 import styles from './StyleSheet.js';
 import { ignorePress, dayStringFromNumber } from './UsefulFunctions.js';
-import DateTimePicker from '@react-native-community/datetimepicker';
 
 export const TextField = (props) => {
   return (
@@ -213,13 +212,72 @@ export const FoodItem = (props) => {
   );
 };
 
+export const MealPlannerFoodItem = (props) => {
+  return (
+    <View style={[styles.row, styles.mealPlannerFoodItem]}>
+      <View style={[styles.col, styles.whiteBg, { flex: 1 }]} />
+      <View style={[styles.col, { flex: 15 }]}>
+        <View style={[styles.whiteBg, { flex: 1 }]} />
+        <View style={[styles.row, { flex: 20 }]}>
+          <View style={[styles.col, { flex: 5 }]}>
+            <View style={[{ flex: 14, padding: 5 }]}>
+              <Image style={styles.image} source={{ uri: props.image }} />
+            </View>
+
+            <View style={[{ flex: 5 }]}>
+              <Text numberOfLines={1} style={[styles.widthHeight100, styles.centered]}>
+                {props.quantity} g
+              </Text>
+            </View>
+          </View>
+
+          <View style={[styles.col, { flex: 5, paddingRight: 5 }]}>
+            <View style={[{ flex: 5 }]}>
+              <Text numberOfLines={1} style={[styles.bold]}>
+                {props.label}
+              </Text>
+            </View>
+            <View style={[{ flex: 5 }]}>
+              <Text numberOfLines={1} style={[styles.bold]}>
+                {props.cal} kCal
+              </Text>
+            </View>
+            <View style={[{ flex: 5 }]}>
+              <Text numberOfLines={1} style={[styles.bold]}>
+                {props.prot}g prot
+              </Text>
+            </View>
+            <View style={[{ flex: 5 }]}>
+              <Text numberOfLines={1} style={[styles.bold]}>
+                {props.fat}g fat
+              </Text>
+            </View>
+            <View style={[{ flex: 5 }]}>
+              <TouchableOpacity
+                onPress={() => {
+                  props.removeFunction(props.foodId, props.meal);
+                }}>
+                <Text numberOfLines={1} style={[styles.bold, styles.removeButton]}>
+                  Remove
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+        <View style={[styles.whiteBg, { flex: 1 }]} />
+      </View>
+      <View style={[styles.col, styles.whiteBg, { flex: 1 }]} />
+    </View>
+  );
+};
+
 export const FoodModal = (props) => {
   const [datePickerShow, setDatePickerShow] = useState(false);
 
   const dateChange = (event, selectedDate) => {
-    const currentDate = selectedDate;
+    selectedDate.setHours(0, 0, 0, 0);
     setDatePickerShow(false);
-    props.dateStateFunction(currentDate);
+    props.dateStateFunction(selectedDate);
   };
 
   return (
@@ -391,9 +449,7 @@ export const FoodModal = (props) => {
               {props.dateState.getMonth() < 10
                 ? '0' + props.dateState.getMonth()
                 : props.dateState.getMonth()}{' '}
-              / {props.dateState.getFullYear()} {'('}
-              {dayStringFromNumber(props.dateState.getDay())}
-              {')'}
+              / {props.dateState.getFullYear()} ({dayStringFromNumber(props.dateState.getDay())})
             </Text>
           </View>
         </View>

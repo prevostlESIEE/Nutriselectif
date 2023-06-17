@@ -1,5 +1,4 @@
 import { StyleSheet, Platform, NativeModules } from 'react-native';
-import { LinearGradient } from 'react-native-svg';
 
 const { StatusBarManager } = NativeModules;
 
@@ -71,6 +70,16 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 600,
     fontSize: 18,
+  },
+
+  removeButton: {
+    height: 20,
+    backgroundColor: '#990000',
+    textAlignVertical: 'center',
+    textAlign: 'center',
+    padding: 2,
+    width: '100%',
+    color: 'white',
   },
 
   addButton: {
@@ -205,6 +214,58 @@ const styles = StyleSheet.create({
   modal: {
     width: '60%',
     height: '60%',
+  },
+
+  mealPlannerHeader: {
+    backgroundColor: 'lightgreen',
+    paddingTop: 5,
+    height: 100,
+  },
+
+  mealPlannerHeaderDay: {
+    fontSize: 25,
+  },
+
+  mealPlannerHeaderCal: {
+    fontSize: 18,
+  },
+
+  mealPlannerMealRow: {
+    flexDirection: 'row',
+    paddingVertical: 5,
+  },
+
+  mealPlannerMealScrollView: {
+    backgroundColor: 'white',
+    flex: 3,
+    paddingRight: 5,
+  },
+
+  mealPlannerRowTitle: {
+    fontSize: 18,
+    height: '100%',
+  },
+
+  changeDayArrow: {
+    backgroundColor: 'lightgreen',
+  },
+
+  mealPlannerHeaderheight: {
+    height: 100,
+  },
+
+  mealPlannerFoodItem: {
+    backgroundColor: 'lightgreen',
+    width: 250,
+  },
+
+  widthHeight100: {
+    width: '100%',
+    height: '100%',
+  },
+
+  whiteBg: {
+    backgroundColor: 'white',
   },
 });
 

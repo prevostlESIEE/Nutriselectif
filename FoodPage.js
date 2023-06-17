@@ -60,13 +60,6 @@ export function FoodPageScreen() {
 
   const searchFunction = async (search) => {
     if (query !== null || query !== undefined) fetchFoodData();
-
-    /*if (query !== '') {
-      const jsonValue = JSON.stringify(query);
-      await AsyncStorage.setItem('storage_Key', jsonValue);
-    } else {
-      let testttt = await AsyncStorage.getItem('storage_Key');
-    }*/
   };
 
   const modalToggle = (foodItem) => {
@@ -81,7 +74,6 @@ export function FoodPageScreen() {
   const mealAdd = async () => {
     let plannedMeals = JSON.parse(await AsyncStorage.getItem('plannedMeals'));
     const dateString = Date.parse(date).toString();
-
     const addedMeal = {
       foodItem: selectedFoodItem,
       // eslint-disable-next-line object-shorthand

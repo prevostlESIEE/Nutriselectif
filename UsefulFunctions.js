@@ -52,5 +52,8 @@ export const BMR = (gender, weight, height, age, activityLevel, healthGoal) => {
 
   const healthGoalValue = healthGoal === 'loss' ? -500 : healthGoal === 'maintenance' ? 0 : 500;
 
-  return [bmr, bmr * activityLevelValue + healthGoalValue];
+  return [
+    Math.floor(bmr * 100) / 100,
+    Math.floor((bmr * activityLevelValue + healthGoalValue) * 100) / 100,
+  ];
 };

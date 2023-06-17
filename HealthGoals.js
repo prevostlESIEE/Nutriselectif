@@ -33,6 +33,17 @@ export function HealthGoalsScreen() {
 
   const [bmr, calories] = BMR(gender, weight, height, age, activityLevel, healthGoal);
 
+  const setDailyCaloriesData = async () => {
+    const mealData = JSON.parse(await AsyncStorage.getItem('plannedMeals'));
+
+    mealData['dailyCalories'] = calories;
+
+    const plannedJson = JSON.stringify(mealData);
+    await AsyncStorage.setItem('plannedMeals', plannedJson);
+  };
+
+  setDailyCaloriesData();
+
   const fieldChange = async (updatedField, state) => {
     await AsyncStorage.setItem(updatedField, state);
   };

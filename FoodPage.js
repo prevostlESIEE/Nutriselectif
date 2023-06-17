@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { Text, View, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableWithoutFeedback, TouchableOpacity, ScrollView } from 'react-native';
 
-import { TextField, AutoCompleteRow } from './CustomComponent';
+import { TextField, AutoCompleteRow, FoodItem } from './CustomComponent';
 import styles from './StyleSheet.js';
 import { ignorePress } from './UsefulFunctions';
 
 export function FoodPageScreen() {
   const [query, setQuery] = useState('');
   const [autoCompleteData, setAutoCompleteData] = useState([]);
+  const [foodData, setFoodData] = useState([]);
 
   const fetchAutocompleteData = async (search) => {
     try {
@@ -26,6 +27,23 @@ export function FoodPageScreen() {
     }
   };
 
+  const fetchFoodData = async () => {
+    try {
+      const API_ENDPOINT = 'https://api.edamam.com/api/food-database/v2/parser';
+      const API_KEY = '52dd75c1fcbc79ed9f5e9c2c99e3b8de';
+      const API_ID = '4edd21ee';
+
+      const url = `${API_ENDPOINT}?ingr=${query}&app_id=${API_ID}&app_key=${API_KEY}`;
+
+      const response = await fetch(url);
+      const result = await response.json();
+
+      setFoodData(result.hints);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const updateAutocompleteData = (search) => {
     fetchAutocompleteData(search);
   };
@@ -34,7 +52,7 @@ export function FoodPageScreen() {
   };
 
   const searchFunction = (search) => {
-    alert(query + ' searched');
+    if (query !== null || query !== undefined) fetchFoodData();
   };
 
   // autocompleteData = fetchData('potato');
@@ -61,6 +79,7 @@ export function FoodPageScreen() {
             {autoCompleteData.map((currentValue, index, arr) => {
               return (
                 <AutoCompleteRow
+                  key={index}
                   text={currentValue}
                   onPressFunction={setQuery}
                   searchFunction={searchFunction}
@@ -74,8 +93,28 @@ export function FoodPageScreen() {
               <Text style={styles.button}>Search</Text>
             </View>
           </TouchableOpacity>
+          <View style={[styles.col, { flex: 1 }]} />
         </View>
-        <View style={[styles.col, { flex: 1 }]} />
+
+        <ScrollView style={{ marginTop: 20 }}>
+          {foodData.map((foodElement, index, arr) => {
+            if (foodElement.food.image === undefined)
+              foodElement.food.image =
+                'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png';
+
+            if (index === 7) debugger;
+            return (
+              <FoodItem
+                key={index}
+                label={foodElement.food.label}
+                image={foodElement.food.image}
+                foodId={foodElement.food.foodId}
+                category={foodElement.food.category}
+                nutrients={foodElement.food.nutrients}
+              />
+            );
+          })}
+        </ScrollView>
       </View>
     </TouchableWithoutFeedback>
   );

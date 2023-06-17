@@ -49,11 +49,9 @@ const styles = StyleSheet.create({
     height: 40,
     backgroundColor: 'lightgreen',
     textAlignVertical: 'center',
-    justifyContent: 'center',
-    alignSelf: 'center',
+    textAlign: 'center',
     padding: 5,
-    paddingLeft: 25,
-    paddingRight: 25,
+    width: '100%',
     marginTop: 15,
   },
 
@@ -119,6 +117,23 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: '#E7E7E7',
     zIndex: 999,
+  },
+
+  foodItem: {
+    height: 100,
+    width: '100%',
+    marginTop: 0,
+    padding: 10,
+    backgroundColor: '#EEEEEE',
+  },
+
+  image: {
+    height: '100%',
+    width: '100%',
+  },
+
+  title: {
+    fontWeight: '700',
   },
 });
 

@@ -19,16 +19,16 @@ function MyTabs() {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
           if (route.name === 'Health Goals') {
-            iconName = 'bullseye-arrow';
+            iconName = focused ? 'arm-flex' : 'arm-flex-outline';
           } else if (route.name === 'Food Page') {
             iconName = focused ? 'food-apple' : 'food-apple-outline';
           } else if (route.name === 'Meal Planning') {
-            iconName = 'ammunition';
+            iconName = focused ? 'calendar-month' : 'calendar-month-outline';
           }
 
           return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: '#58ceb2',
+        tabBarActiveTintColor: 'lightgreen',
         tabBarInactiveTintColor: 'gray',
         tabBarLabelStyle: { paddingBottom: 3 },
       })}>

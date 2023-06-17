@@ -35,35 +35,35 @@ export function HealthGoalsScreen() {
   return (
     <TouchableWithoutFeedback onPress={ignorePress}>
       <View>
-        <TextField label="Age :" keyboardType="numeric" state={age} changeFunction={setAge} />
+        <TextField label="Age" keyboardType="numeric" state={age} changeFunction={setAge} />
         <PickerField
-          label="Gender :"
+          label="Gender"
           data={genderData}
           state={gender}
           changeFunction={setGender}
           promptValue="Gender"
         />
         <TextField
-          label="Height (cm) :"
+          label="Height (cm)"
           keyboardType="numeric"
           state={height}
           changeFunction={setHeight}
         />
         <TextField
-          label="Weight (kg) :"
+          label="Weight (kg)"
           keyboardType="numeric"
           state={weight}
           changeFunction={setWeight}
         />
         <PickerField
-          label="Activity Level :"
+          label="Activity Level"
           data={activityLevelData}
           state={activityLevel}
           changeFunction={setActivityLevel}
           promptValue="Activity Level"
         />
         <PickerField
-          label="Health Goal :"
+          label="Health Goal"
           data={healthGoalData}
           state={healthGoal}
           changeFunction={setHealthGoal}

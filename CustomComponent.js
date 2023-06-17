@@ -1,5 +1,5 @@
 import { Picker } from '@react-native-picker/picker';
-import { Text, View, TextInput, Platform, TouchableOpacity } from 'react-native';
+import { Text, View, TextInput, Platform, TouchableOpacity, Image } from 'react-native';
 
 import styles from './StyleSheet.js';
 import { ignorePress } from './UsefulFunctions.js';
@@ -36,6 +36,8 @@ export const TextField = (props) => {
         </View>
         <View style={[styles.col, { flex: 1 }]} />
       </View>
+
+      <View style={styles.row} />
     </>
   );
 };
@@ -119,6 +121,49 @@ export const AutoCompleteRow = (props) => {
         <View style={[styles.col, { flex: 1 }]} />
         <View style={[styles.col, { flex: 4 }]}>
           <Text style={styles.autocomplete}>{props.text}</Text>
+        </View>
+        <View style={[styles.col, { flex: 1 }]} />
+      </View>
+    </TouchableOpacity>
+  );
+};
+
+export const FoodItem = (props) => {
+  /*CHOCDF: 17.5
+ENERC_KCAL: 77
+FAT: 0.09
+FIBTG: 2.1
+PROCNT: 2.05
+
+Math.floor(1.0789 * 100) / 100*/
+  return (
+    <TouchableOpacity style={[{ height: 100, marginBottom: 10 }]}>
+      <View style={[styles.row]}>
+        <View style={[styles.col, { flex: 1 }]} />
+        <View style={[styles.col, { flex: 7, height: 100 }]}>
+          <Image style={styles.image} source={{ uri: props.image }} />
+        </View>
+        <View style={[styles.col, styles.foodItem, { flex: 15, height: '100%' }]}>
+          <Text style={styles.title}>{props.label}</Text>
+          <Text>{props.category}</Text>
+          <Text style={{ marginTop: 5 }}>100g :</Text>
+          <View style={[styles.row]}>
+            {props.nutrients.ENERC_KCAL !== undefined ? (
+              <Text style={[styles.col, { flex: 1 }]}>
+                {Math.floor(props.nutrients.ENERC_KCAL * 100) / 100} kcal
+              </Text>
+            ) : null}
+            {props.nutrients.PROCNT !== undefined ? (
+              <Text style={[styles.col, { flex: 1 }]}>
+                {Math.floor(props.nutrients.PROCNT * 100) / 100}g prot
+              </Text>
+            ) : null}
+            {props.nutrients.FAT !== undefined ? (
+              <Text style={[styles.col, { flex: 1 }]}>
+                {Math.floor(props.nutrients.FAT * 100) / 100}g fat
+              </Text>
+            ) : null}
+          </View>
         </View>
         <View style={[styles.col, { flex: 1 }]} />
       </View>

@@ -74,41 +74,43 @@ export function FoodPageScreen() {
   };
 
   const mealAdd = async () => {
-    let plannedMeals = JSON.parse(await AsyncStorage.getItem('plannedMeals'));
-    const dateString = Date.parse(date).toString();
-    const addedMeal = {
-      foodItem: selectedFoodItem,
-      // eslint-disable-next-line object-shorthand
-      quantity: quantity,
-    };
+    try {
+      let plannedMeals = JSON.parse(await AsyncStorage.getItem('plannedMeals'));
+      const dateString = Date.parse(date).toString();
+      const addedMeal = {
+        foodItem: selectedFoodItem,
+        // eslint-disable-next-line object-shorthand
+        quantity: quantity,
+      };
 
-    if (plannedMeals === null) {
-      plannedMeals = {};
-    }
+      if (plannedMeals === null) {
+        plannedMeals = {};
+      }
 
-    if (plannedMeals[dateString] === undefined) {
-      plannedMeals[dateString] = {};
-    }
+      if (plannedMeals[dateString] === undefined) {
+        plannedMeals[dateString] = {};
+      }
 
-    if (plannedMeals[dateString][meal] === undefined) {
-      plannedMeals[dateString][meal] = {};
-    }
+      if (plannedMeals[dateString][meal] === undefined) {
+        plannedMeals[dateString][meal] = {};
+      }
 
-    if (plannedMeals[dateString][meal][selectedFoodItem.foodId] === undefined) {
-      plannedMeals[dateString][meal][selectedFoodItem.foodId] = addedMeal;
-    } else {
-      const currentQuantity = parseInt(
-        plannedMeals[dateString][meal][selectedFoodItem.foodId].quantity,
-        10
-      );
-      plannedMeals[dateString][meal][selectedFoodItem.foodId].quantity =
-        currentQuantity + parseInt(addedMeal.quantity, 10);
-    }
+      if (plannedMeals[dateString][meal][selectedFoodItem.foodId] === undefined) {
+        plannedMeals[dateString][meal][selectedFoodItem.foodId] = addedMeal;
+      } else {
+        const currentQuantity = parseInt(
+          plannedMeals[dateString][meal][selectedFoodItem.foodId].quantity,
+          10
+        );
+        plannedMeals[dateString][meal][selectedFoodItem.foodId].quantity =
+          currentQuantity + parseInt(addedMeal.quantity, 10);
+      }
 
-    const plannedJson = JSON.stringify(plannedMeals);
-    await AsyncStorage.setItem('plannedMeals', plannedJson);
+      const plannedJson = JSON.stringify(plannedMeals);
+      await AsyncStorage.setItem('plannedMeals', plannedJson);
 
-    setModalVisible(!modalVisible);
+      setModalVisible(!modalVisible);
+    } catch (e) {}
   };
 
   return (
@@ -162,10 +164,10 @@ export function FoodPageScreen() {
             return (
               <>
                 <TouchableOpacity
+                  key={index}
                   style={[{ height: 100, marginBottom: 10 }]}
                   onPress={() => modalToggle(foodElement.food)}>
                   <FoodItem
-                    key={index}
                     label={foodElement.food.label}
                     image={foodElement.food.image}
                     foodId={foodElement.food.foodId}

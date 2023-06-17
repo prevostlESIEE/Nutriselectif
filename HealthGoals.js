@@ -34,18 +34,22 @@ export function HealthGoalsScreen() {
   const [bmr, calories] = BMR(gender, weight, height, age, activityLevel, healthGoal);
 
   const setDailyCaloriesData = async () => {
-    const mealData = JSON.parse(await AsyncStorage.getItem('plannedMeals'));
+    try {
+      const mealData = JSON.parse(await AsyncStorage.getItem('plannedMeals'));
 
-    mealData['dailyCalories'] = calories;
+      mealData['dailyCalories'] = calories;
 
-    const plannedJson = JSON.stringify(mealData);
-    await AsyncStorage.setItem('plannedMeals', plannedJson);
+      const plannedJson = JSON.stringify(mealData);
+      await AsyncStorage.setItem('plannedMeals', plannedJson);
+    } catch (e) {}
   };
 
   setDailyCaloriesData();
 
   const fieldChange = async (updatedField, state) => {
-    await AsyncStorage.setItem(updatedField, state);
+    try {
+      await AsyncStorage.setItem(updatedField, state);
+    } catch (e) {}
   };
 
   //despite using await, the following functions are necessary.
@@ -76,12 +80,14 @@ export function HealthGoalsScreen() {
   };
 
   const getHealthGoalDefaultValue = async () => {
-    setAge(await AsyncStorage.getItem('age'));
-    setGender(await AsyncStorage.getItem('gender'));
-    setHeight(await AsyncStorage.getItem('height'));
-    setWeight(await AsyncStorage.getItem('weight'));
-    setActivityLevel(await AsyncStorage.getItem('activityLevel'));
-    setHealthGoal(await AsyncStorage.getItem('healthGoal'));
+    try {
+      setAge(await AsyncStorage.getItem('age'));
+      setGender(await AsyncStorage.getItem('gender'));
+      setHeight(await AsyncStorage.getItem('height'));
+      setWeight(await AsyncStorage.getItem('weight'));
+      setActivityLevel(await AsyncStorage.getItem('activityLevel'));
+      setHealthGoal(await AsyncStorage.getItem('healthGoal'));
+    } catch (e) {}
   };
   if (age === '') getHealthGoalDefaultValue();
 

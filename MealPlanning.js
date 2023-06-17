@@ -31,12 +31,23 @@ export function MealPlanningScreen() {
 
   const getCurrentCalories = () => {
     if (mealData[displayedDateString] !== undefined) {
-      return (
-        mealData[displayedDateString]['breakfastCalories'] +
-        mealData[displayedDateString]['lunchCalories'] +
-        mealData[displayedDateString]['snackCalories'] +
-        mealData[displayedDateString]['dinerCalories']
-      );
+      const breakfast =
+        mealData[displayedDateString]['breakfastCalories'] === undefined
+          ? 0
+          : mealData[displayedDateString]['breakfastCalories'];
+      const lunch =
+        mealData[displayedDateString]['lunchCalories'] === undefined
+          ? 0
+          : mealData[displayedDateString]['lunchCalories'];
+      const snack =
+        mealData[displayedDateString]['snackCalories'] === undefined
+          ? 0
+          : mealData[displayedDateString]['snackCalories'];
+      const diner =
+        mealData[displayedDateString]['dinerCalories'] === undefined
+          ? 0
+          : mealData[displayedDateString]['dinerCalories'];
+      return breakfast + lunch + snack + diner;
     } else return 0;
   };
 
@@ -85,22 +96,26 @@ export function MealPlanningScreen() {
           calories += (meal.foodItem.nutrients.ENERC_KCAL * meal.quantity) / 100;
         });
       mealData[displayedDateString]['snackCalories'] = calories;
-      calories = 0;
 
+      calories = 0;
       mealData[displayedDateString]['diner'] &&
         Object.entries(mealData[displayedDateString]['diner']).map(([key, meal]) => {
           calories += (meal.foodItem.nutrients.ENERC_KCAL * meal.quantity) / 100;
         });
       mealData[displayedDateString]['dinerCalories'] = calories;
-      setMealData(mealData);
-    } catch (e) {}
+      await setMealData(mealData);
+    } catch (e) {
+      debugger;
+    }
   };
 
   const removeFoodItem = async (foodId, meal) => {
     delete mealData[displayedDateString][meal][foodId];
 
     const plannedJson = JSON.stringify(mealData);
-    await AsyncStorage.setItem('plannedMeals', plannedJson);
+    try {
+      await AsyncStorage.setItem('plannedMeals', plannedJson);
+    } catch (e) {}
     getMealData();
   };
 

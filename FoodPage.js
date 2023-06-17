@@ -7,13 +7,15 @@ import styles from './StyleSheet.js';
 import { ignorePress } from './UsefulFunctions';
 
 export function FoodPageScreen() {
+  const todayWithTime = new Date().setHours(0, 0, 0, 0);
+
   const [query, setQuery] = useState('');
   const [autoCompleteData, setAutoCompleteData] = useState([]);
   const [foodData, setFoodData] = useState([]);
   const [selectedFoodItem, setSelectedFoodItem] = useState({});
   const [quantity, setQuantity] = useState('100');
   const [meal, setMeal] = useState('breakfast');
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(new Date(todayWithTime));
 
   const [modalVisible, setModalVisible] = useState(false);
 

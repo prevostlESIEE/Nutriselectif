@@ -185,7 +185,9 @@ export const FoodItem = (props) => {
         <Image style={styles.image} source={{ uri: props.image }} />
       </View>
       <View style={[styles.col, styles.foodItem, { flex: 15, height: '100%' }]}>
-        <Text style={styles.bold}>{props.label}</Text>
+        <Text numberOfLines={1} style={styles.bold}>
+          {props.label}
+        </Text>
         <Text>{props.category}</Text>
         <Text style={{ marginTop: 5 }}>100g :</Text>
         <View style={[styles.row]}>

@@ -1,6 +1,6 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState } from 'react';
 import { Text, View, TouchableWithoutFeedback, TouchableOpacity, ScrollView } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { SearchTextField, AutoCompleteRow, FoodItem, FoodModal } from './CustomComponent';
 import styles from './StyleSheet.js';
@@ -78,7 +78,44 @@ export function FoodPageScreen() {
     setMeal(meal);
   };
 
-  const mealAdd = () => {};
+  const mealAdd = async () => {
+    let plannedMeals = JSON.parse(await AsyncStorage.getItem('plannedMeals'));
+    const dateString = Date.parse(date).toString();
+
+    const addedMeal = {
+      foodItem: selectedFoodItem,
+      // eslint-disable-next-line object-shorthand
+      quantity: quantity,
+    };
+
+    if (plannedMeals === null) {
+      plannedMeals = {};
+    }
+
+    if (plannedMeals[dateString] === undefined) {
+      plannedMeals[dateString] = {};
+    }
+
+    if (plannedMeals[dateString][meal] === undefined) {
+      plannedMeals[dateString][meal] = {};
+    }
+
+    if (plannedMeals[dateString][meal][selectedFoodItem.foodId] === undefined) {
+      plannedMeals[dateString][meal][selectedFoodItem.foodId] = addedMeal;
+    } else {
+      const currentQuantity = parseInt(
+        plannedMeals[dateString][meal][selectedFoodItem.foodId].quantity,
+        10
+      );
+      plannedMeals[dateString][meal][selectedFoodItem.foodId].quantity =
+        currentQuantity + parseInt(addedMeal.quantity, 10);
+    }
+
+    const plannedJson = JSON.stringify(plannedMeals);
+    await AsyncStorage.setItem('plannedMeals', plannedJson);
+
+    setModalVisible(!modalVisible);
+  };
 
   return (
     //4edd21ee

@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState } from 'react';
 import { View, TouchableWithoutFeedback } from 'react-native';
 
@@ -32,41 +33,82 @@ export function HealthGoalsScreen() {
 
   const [bmr, calories] = BMR(gender, weight, height, age, activityLevel, healthGoal);
 
+  const fieldChange = async (updatedField, state) => {
+    await AsyncStorage.setItem(updatedField, state);
+  };
+
+  //despite using await, the following functions are necessary.
+  //Without them, the uploaded value will always be missing the last character (or not update at all with pickers)
+  const ageChange = async (value) => {
+    await setAge(value);
+    await fieldChange('age', value);
+  };
+  const genderChange = async (value) => {
+    await setGender(value);
+    await fieldChange('gender', value);
+  };
+  const heightChange = async (value) => {
+    await setHeight(value);
+    await fieldChange('height', value);
+  };
+  const weightChange = async (value) => {
+    await setWeight(value);
+    await fieldChange('weight', value);
+  };
+  const activityLevelChange = async (value) => {
+    await setActivityLevel(value);
+    await fieldChange('activityLevel', value);
+  };
+  const healthGoalChange = async (value) => {
+    await setHealthGoal(value);
+    await fieldChange('healthGoal', value);
+  };
+
+  const getHealthGoalDefaultValue = async () => {
+    setAge(await AsyncStorage.getItem('age'));
+    setGender(await AsyncStorage.getItem('gender'));
+    setHeight(await AsyncStorage.getItem('height'));
+    setWeight(await AsyncStorage.getItem('weight'));
+    setActivityLevel(await AsyncStorage.getItem('activityLevel'));
+    setHealthGoal(await AsyncStorage.getItem('healthGoal'));
+  };
+  if (age === '') getHealthGoalDefaultValue();
+
   return (
     <TouchableWithoutFeedback onPress={ignorePress}>
       <View>
-        <TextField label="Age" keyboardType="numeric" state={age} changeFunction={setAge} />
+        <TextField label="Age" keyboardType="numeric" state={age} changeFunction={ageChange} />
         <PickerField
           label="Gender"
           data={genderData}
           state={gender}
-          changeFunction={setGender}
+          changeFunction={genderChange}
           promptValue="Gender"
         />
         <TextField
           label="Height (cm)"
           keyboardType="numeric"
           state={height}
-          changeFunction={setHeight}
+          changeFunction={heightChange}
         />
         <TextField
           label="Weight (kg)"
           keyboardType="numeric"
           state={weight}
-          changeFunction={setWeight}
+          changeFunction={weightChange}
         />
         <PickerField
           label="Activity Level"
           data={activityLevelData}
           state={activityLevel}
-          changeFunction={setActivityLevel}
+          changeFunction={activityLevelChange}
           promptValue="Activity Level"
         />
         <PickerField
           label="Health Goal"
           data={healthGoalData}
           state={healthGoal}
-          changeFunction={setHealthGoal}
+          changeFunction={healthGoalChange}
           promptValue="Health Goal"
         />
 

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Text, View, TouchableWithoutFeedback, TouchableOpacity, ScrollView } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { TextField, AutoCompleteRow, FoodItem } from './CustomComponent';
+import { SearchTextField, AutoCompleteRow, FoodItem, FoodModal } from './CustomComponent';
 import styles from './StyleSheet.js';
 import { ignorePress } from './UsefulFunctions';
 
@@ -9,6 +10,12 @@ export function FoodPageScreen() {
   const [query, setQuery] = useState('');
   const [autoCompleteData, setAutoCompleteData] = useState([]);
   const [foodData, setFoodData] = useState([]);
+  const [selectedFoodItem, setSelectedFoodItem] = useState({});
+  const [quantity, setQuantity] = useState('100');
+  const [meal, setMeal] = useState('breakfast');
+  const [date, setDate] = useState(new Date());
+
+  const [modalVisible, setModalVisible] = useState(false);
 
   const fetchAutocompleteData = async (search) => {
     try {
@@ -38,7 +45,7 @@ export function FoodPageScreen() {
       const response = await fetch(url);
       const result = await response.json();
 
-      setFoodData(result.hints);
+      setFoodData(result.hints.slice(0, 50));
     } catch (error) {
       console.error(error);
     }
@@ -51,11 +58,27 @@ export function FoodPageScreen() {
     setAutoCompleteData([]);
   };
 
-  const searchFunction = (search) => {
+  const searchFunction = async (search) => {
     if (query !== null || query !== undefined) fetchFoodData();
+
+    /*if (query !== '') {
+      const jsonValue = JSON.stringify(query);
+      await AsyncStorage.setItem('storage_Key', jsonValue);
+    } else {
+      let testttt = await AsyncStorage.getItem('storage_Key');
+    }*/
   };
 
-  // autocompleteData = fetchData('potato');
+  const modalToggle = (foodItem) => {
+    setSelectedFoodItem(foodItem);
+    setModalVisible(!modalVisible);
+  };
+
+  const mealPressFunction = (meal) => {
+    setMeal(meal);
+  };
+
+  const mealAdd = () => {};
 
   return (
     //4edd21ee
@@ -65,17 +88,20 @@ export function FoodPageScreen() {
       <View style={styles.noFeedbackZone}>
         <View style={[styles.row, { zIndex: 2 }]}>
           <View style={[styles.col, { flex: 8, position: 'relative' }]}>
-            <TextField
+            <SearchTextField
               id="foodSearchText"
               state={query}
               changeFunction={setQuery}
               placeholder="Search for food"
-              additionnalStyle={[styles.noMarginBottom, styles.foodPageTextInput]}
+              additionnalStyle={[
+                styles.noMarginBottom,
+                styles.foodPageTextInput,
+                { borderRightWidth: 0 },
+              ]}
               focusFunction={updateAutocompleteData}
               blurFunction={resetAutocompleteData}
               autoCompleteChange={updateAutocompleteData}
             />
-
             {autoCompleteData.map((currentValue, index, arr) => {
               return (
                 <AutoCompleteRow
@@ -90,7 +116,7 @@ export function FoodPageScreen() {
           </View>
           <TouchableOpacity style={[styles.col, { flex: 3 }]} onPress={searchFunction}>
             <View>
-              <Text style={styles.button}>Search</Text>
+              <Text style={styles.searchButton}>Search</Text>
             </View>
           </TouchableOpacity>
           <View style={[styles.col, { flex: 1 }]} />
@@ -102,19 +128,37 @@ export function FoodPageScreen() {
               foodElement.food.image =
                 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png';
 
-            if (index === 7) debugger;
             return (
-              <FoodItem
-                key={index}
-                label={foodElement.food.label}
-                image={foodElement.food.image}
-                foodId={foodElement.food.foodId}
-                category={foodElement.food.category}
-                nutrients={foodElement.food.nutrients}
-              />
+              <>
+                <TouchableOpacity
+                  style={[{ height: 100, marginBottom: 10 }]}
+                  onPress={() => modalToggle(foodElement.food)}>
+                  <FoodItem
+                    key={index}
+                    label={foodElement.food.label}
+                    image={foodElement.food.image}
+                    foodId={foodElement.food.foodId}
+                    category={foodElement.food.category}
+                    nutrients={foodElement.food.nutrients}
+                  />
+                </TouchableOpacity>
+              </>
             );
           })}
         </ScrollView>
+
+        <FoodModal
+          closeFunction={modalToggle}
+          visibilityParam={modalVisible}
+          selectedFoodItem={selectedFoodItem}
+          quantityState={quantity}
+          quantityStateFunction={setQuantity}
+          mealState={meal}
+          mealPressFunction={mealPressFunction}
+          dateState={date}
+          dateStateFunction={setDate}
+          addFunction={mealAdd}
+        />
       </View>
     </TouchableWithoutFeedback>
   );

@@ -1,4 +1,5 @@
 import { StyleSheet, Platform, NativeModules } from 'react-native';
+import { LinearGradient } from 'react-native-svg';
 
 const { StatusBarManager } = NativeModules;
 
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 
-  button: {
+  searchButton: {
     height: 40,
     backgroundColor: 'lightgreen',
     textAlignVertical: 'center',
@@ -53,6 +54,57 @@ const styles = StyleSheet.create({
     padding: 5,
     width: '100%',
     marginTop: 15,
+    fontWeight: 400,
+    fontSize: 18,
+    borderWidth: 1,
+    borderLeftWidth: 0,
+  },
+
+  closeButton: {
+    height: 40,
+    backgroundColor: '#990000',
+    textAlignVertical: 'center',
+    textAlign: 'center',
+    padding: 5,
+    width: '100%',
+    marginTop: 15,
+    color: 'white',
+    fontWeight: 600,
+    fontSize: 18,
+  },
+
+  addButton: {
+    height: 40,
+    backgroundColor: 'lightgreen',
+    textAlignVertical: 'center',
+    textAlign: 'center',
+    padding: 5,
+    width: '100%',
+    marginTop: 15,
+    fontWeight: 600,
+    fontSize: 18,
+  },
+
+  uniqueButton: {
+    height: 40,
+    backgroundColor: 'grey',
+    textAlignVertical: 'center',
+    textAlign: 'center',
+    padding: 5,
+    width: '100%',
+    fontWeight: 500,
+    fontSize: 16,
+  },
+
+  dateButton: {
+    height: 40,
+    backgroundColor: 'lightgreen',
+    textAlignVertical: 'center',
+    textAlign: 'center',
+    padding: 5,
+    width: '100%',
+    fontWeight: 500,
+    fontSize: 16,
   },
 
   foodPageTextInput: {
@@ -132,8 +184,27 @@ const styles = StyleSheet.create({
     width: '100%',
   },
 
-  title: {
+  bold: {
     fontWeight: '700',
+  },
+
+  title: {
+    fontSize: 24,
+  },
+
+  title2: {
+    fontSize: 18,
+  },
+
+  centered: {
+    alignItems: 'center',
+    textAlign: 'center',
+    textAlignVertical: 'center',
+  },
+
+  modal: {
+    width: '60%',
+    height: '60%',
   },
 });
 

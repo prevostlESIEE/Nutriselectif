@@ -1,0 +1,71 @@
+Team :
+
+RICHARD Manil - Developper
+PREVOST Louis - Developper
+
+Both being intrested in React Native and Javascript, we insisted on developping the application at the same time.
+No component was "made by someone".
+
+
+
+The project
+
+NutriSelectif is a meal planning application. 
+
+It provides the following Tabs to its users :
+
+    - A form in which users can give a few necessary informations (age, gender, height, weight, activity level, health goal)
+    From these informations the application will automatically :
+        - Calculate their BMR
+        - Calculate their recommended daily calories intake
+    
+    - A food searching interface featuring
+        - Access to https://developer.edamam.com/food-database-api API
+        - Search autocompletion (limited to 5 propositions)
+        - Result display 
+            - Image
+            - Label
+            - Category
+            - Caloric intake (for 100g)
+            - Protein intake (for 100g)
+            - Fat intake (for 100g)
+
+        - Each displayed Item is selectible.
+        On selection, a modal appears allowing the users to :
+        - View the same informations as before
+        - Write the quantity of food he wants to add to his meal plan 
+        - Select a meal of the day, which the food will be added to (Breakfast, Lunch, Snack, Diner)
+        - Select a date to add the food element to (from a date-picker)
+        - Submit button that adds the food element according to the informations given to the userInterfaceStyle
+
+    - A meal planning interface
+        - Works as a calendar
+            - The user can select a date
+            - The user can go to the previous or next day with arrows
+        - On the main panel, each meals that the user planned from the food page will be displayed.
+        - The caloric intake of every selected food will be calculated:
+            - The caloric intake of each food selected will be displayed under each meal
+            This makes it easier for the user to balance the calories he needs during the day
+        - The total amount of calories for the day is also displayed, next to the previously calculated recommended calories intake.
+        - The user can remove a food element thanks to a "remove button" on each food alignItems
+
+The user healthgoals and meals planned will be saved on his device, thus insuring data persistence when closing the application.
+
+
+How to install the application:
+
+    - Check that react and expo are installed on your workstation
+
+    - Clone the git repository 
+
+    - In the root folder of the application (NutriSelectif/), start a command prompt.
+
+    - run "npm install"
+        - This should install all dependencies required by the project.
+        - It may be necessary to user "npm install" several times.
+
+    - Once the dependencies are installed, run "npx expo start"
+        - After a few secondes, a QR code will be displayed by the command prompt.
+
+    - From the Expo Go mobile app, select the "Scan QR Code" option and scan the displayed QR Code.
+        The application should start on your mobile device.
